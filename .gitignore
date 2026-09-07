@@ -3,17 +3,26 @@ __pycache__/
 .venv/
 .env
 
+# Large/private training artifacts
 data/
 datasets/
-media/
 models/
 checkpoints/
 runs/
+outputs/
+wandb/
 
 *.pt
 *.pth
 *.onnx
+*.safetensors
+*.parquet
+
+# Raw media stays local; reviewed images may be committed later
+media/raw/
 *.mp4
+*.mov
 
 .ipynb_checkpoints/
 .vscode/
+
