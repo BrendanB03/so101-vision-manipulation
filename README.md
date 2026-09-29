@@ -84,7 +84,7 @@ The final acceptance test used 30 first-attempt trials with no retries. A trial 
 | Retries | 0 |
 | Only failure | Trial 15 at 63 degrees; the policy failed to orient properly |
 
-The recovered project history confirms the aggregate result and the single failure, but it did not expose all 30 original row-level records. The repository therefore does not invent a trial-by-trial CSV. The original table will be added when the source record is supplied. See [Evaluation Summary](results/evaluation-summary.md).
+The complete trial-by-trial record is available in [Final Test Results](results/final-test-results.csv). The source table recorded position, angle, overall success, and notes; it did not separately score grasp and bin-placement outcomes.
 
 ## Problems solved
 
@@ -127,7 +127,7 @@ Exact historical commands are included only where they were recoverable. Procedu
 - Only one object-and-destination task was qualified: red cube to blue bin.
 - Lighting, camera placement, bin position, and background variation were limited.
 - The final policy was sensitive to camera-to-workspace geometry.
-- The complete row-level final test log and demonstration videos are not yet in the repository.
+- Demonstration videos are not yet in the repository.
 - Dataset and policy repositories remain private and are not public reproduction dependencies.
 
 ## Future improvements
@@ -142,4 +142,3 @@ Exact historical commands are included only where they were recoverable. Procedu
 ## Acknowledgments
 
 This project was built with [Hugging Face LeRobot](https://github.com/huggingface/lerobot), PyTorch, the SO-101 leader/follower platform, and an Intel RealSense D455 camera. ACT and LeRobot are upstream technologies; this repository documents their application, dataset development, integration, troubleshooting, and experimental validation in this project.
-

@@ -34,13 +34,8 @@ The 24/25 test's only failure involved the arm striking the top of the cube. All
 
 The improvement from 55.0% to 96.7% followed targeted dataset changes based on observed failure modes. The strongest supported conclusion is that the final policy generalized well within the qualified tabletop task distribution—not that it solved unrestricted object manipulation.
 
-## Missing row-level table
+## Row-level results
 
-The original 30-row table was not retrievable during this documentation pass. Only the aggregate result and trial 15 failure record were available. A `final-test-results.csv` is intentionally omitted until the original rows can be supplied; no success rows have been invented.
+The complete source data is available in [final-test-results.csv](final-test-results.csv). The CSV preserves the original randomized-position descriptions, angles, overall success values, and notes.
 
-When recovered, the CSV should preserve these columns:
-
-```text
-trial,randomized_position,angle_degrees,grasp_success,bin_placement_success,overall_success,notes
-```
-
+The original test table did not separately score grasp success and bin-placement success, so those fields are not inferred.

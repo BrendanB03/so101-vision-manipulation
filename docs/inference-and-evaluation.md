@@ -48,21 +48,20 @@ A low 3D-printed boundary and removable ramp had been designed to randomize cube
 
 The sole failure occurred on trial 15 at 63 degrees. The recorded note was: **Failed to orient properly.**
 
-## Row-level data status
+## Row-level data
 
-The project history available during this documentation pass exposed the aggregate result and the single failure, but not all 30 original table rows. Publishing 29 invented success rows would make the repository look complete while weakening its credibility.
+The complete source table was preserved as [Final Test Results](../results/final-test-results.csv). It contains all 30 randomized positions, angles, overall outcomes, and original notes.
 
-The trial-by-trial CSV will be added after the original table is supplied or exported. Until then, [the evaluation summary](../results/evaluation-summary.md) is the authoritative repository record.
+The historical table did not separately record grasp success and bin-placement success. Those fields are therefore not backfilled or inferred.
 
 ## Limitations
 
 - Thirty trials provide useful acceptance evidence but not a broad statistical characterization.
 - Trials came from one robot, camera, object, bin, and tabletop setup.
-- The test did not independently estimate grasp and placement reliability from the recovered row-level data.
+- The test did not independently score grasp and placement reliability in separate fields.
 - Lighting and background robustness were not systematically qualified.
 - Camera pose sensitivity remained a known limitation.
 
 ## Recommended next evaluation
 
 Use at least 100 preregistered trials split across position zones, angle bins, lighting conditions, and multiple sessions. Record grasp success, lift success, bin placement, overall success, failure category, and policy/checkpoint revision separately.
-
