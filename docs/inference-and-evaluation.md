@@ -4,12 +4,10 @@
 
 During inference, the follower arm executed the learned ACT policy using the same observation structure established during recording and training. The camera viewed the red cube, blue bin, and arm workspace while the policy generated action chunks for the complete task.
 
-The complete historical rollout command was not recovered. It is intentionally not reconstructed.
-
 Before a rollout:
 
 1. Confirm the follower calibration and serial device.
-2. Confirm that the correct D455 stream is active.
+2. Confirm that the correct camera stream is active.
 3. Verify camera pose and workspace visibility.
 4. Remove any teleoperation process that could also command the follower.
 5. Load the intended policy checkpoint.
@@ -20,10 +18,14 @@ Before a rollout:
 
 | Evaluation | Result | Interpretation |
 | --- | ---: | --- |
-| Initial generalized test | 11/20 (55.0%) | Strong evidence that the early training distribution was too narrow. |
-| Intermediate qualification | 20/21 (95.2%) | Large improvement after targeted dataset refinement; detailed conditions were not recoverable. |
-| Expanded-position qualification | 24/25 (96.0%) | Four new top/bottom gap positions succeeded; one trial struck the cube's top. |
-| Final randomized acceptance test | 29/30 (96.7%) | Final project result across randomized intermediate positions and orientations. |
+| Fixed-position baseline | 10/10 (100%) | Demonstrated repeatability at the taught position and orientation; position and orientation generalization were not yet tested. |
+| V2 position-generalization test | 24/30 (80.0%) | Performance varied by workspace region. The right side succeeded in only 1/5 trials, identifying a clear weakness. |
+| V5 position qualification | 29/30 (96.7%) | Targeted position recordings improved right-side performance to 5/5. Many successful grasps still favored the cube’s right side. |
+| V6 center-orientation test | 14/20 (70.0%) | Testing different orientations at the center exposed right-biased grasp failures, particularly at +75° and −15°. |
+| Broader generalized diagnostic | Approximately 11/20 (55.0%) | Broader testing exposed remaining generalization limits before the clean rebuild. |
+| Clean 378-episode model qualification | 20/21 (95.2%) | Substantial improvement following the fresh, balanced position-and-orientation recordings. |
+| Final 450-episode model qualification | 24/25 (96.0%) | Evaluated the expanded position coverage after adding 72 demonstrations. One failed trial struck the cube’s top. |
+| Final randomized acceptance test | **29/30 (96.7%)** | Final reported result across randomized positions and intermediate orientations. The sole failure occurred at 63° and involved improper grasp orientation. |
 
 ## Final acceptance-test protocol
 
@@ -38,8 +40,6 @@ Verified elements of the final test:
 - Previously unseen intermediate orientations were included
 - Position, angle, overall success, and notes were recorded
 
-A low 3D-printed boundary and removable ramp had been designed to randomize cube position and yaw. Available project history does not confirm that the ramp was actually used during the final 30 trials, so it is not listed as part of the verified final protocol.
-
 ## Result
 
 \[
@@ -52,8 +52,6 @@ The sole failure occurred on trial 15 at 63 degrees. The recorded note was: **Fa
 
 The complete source table was preserved as [Final Test Results](../results/final-test-results.csv). It contains all 30 randomized positions, angles, overall outcomes, and original notes.
 
-The historical table did not separately record grasp success and bin-placement success. Those fields are therefore not backfilled or inferred.
-
 ## Limitations
 
 - Thirty trials provide useful acceptance evidence but not a broad statistical characterization.
@@ -61,7 +59,3 @@ The historical table did not separately record grasp success and bin-placement s
 - The test did not independently score grasp and placement reliability in separate fields.
 - Lighting and background robustness were not systematically qualified.
 - Camera pose sensitivity remained a known limitation.
-
-## Recommended next evaluation
-
-Use at least 100 preregistered trials split across position zones, angle bins, lighting conditions, and multiple sessions. Record grasp success, lift success, bin placement, overall success, failure category, and policy/checkpoint revision separately.
