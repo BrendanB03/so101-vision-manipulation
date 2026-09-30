@@ -24,6 +24,7 @@ Approximately 750 teleoperated demonstrations were collected and curated across 
 ## Dataset History
 
 | Stage | Episode count | Description |
+| --- | --- | --- |
 | Initial recording test | 5 | Basic red-cube-to-blue-bin demonstrations to verify teleoperation, camera recording, and dataset creation. |
 | Fixed-position baseline | 25 | All demonstrations used the same cube position and orientation, teaching a consistent pickup, transport, and placement sequence. |
 | V2 position variation | 80 | Varied cube positions while keeping orientation constant. Testing exposed weak performance on the right side of the workspace. |
