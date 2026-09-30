@@ -15,9 +15,9 @@ The recorded workstation configuration was an Intel Core i7-8700K, NVIDIA RTX 20
 
 ## Arm connectivity
 
-During the working setup, the follower enumerated as `/dev/ttyACM0` and the leader as `/dev/ttyACM1`. These paths are historical observations, not portable configuration: USB enumeration can change after reconnecting devices or rebooting.
+During the working setup, the follower enumerated as `/dev/ttyACM0` and the leader as `/dev/ttyACM1`. 
 
-Both arms were calibrated before recording. The project used persistent LeRobot calibration identities for the leader and follower, but conflicting shorthand versions of those identifiers appear in the recovered notes. They are intentionally not presented as canonical values here.
+Both arms were calibrated before recording. The project used persistent LeRobot calibration identities for the leader and follower.
 
 Before recording or rollout, verify:
 
@@ -29,7 +29,7 @@ Before recording or rollout, verify:
 
 ## Camera and workspace
 
-The Intel RealSense D455 was positioned to show the cube, blue bin, follower arm, grasp approach, and placement region. The working stream ran at 30 FPS; different resolution values appeared during setup checks, so the exact recording resolution should be read from dataset metadata rather than inferred from these notes.
+The Intel RealSense D455 was positioned to show the cube, blue bin, follower arm, grasp approach, and placement region. The working stream ran at 30 FPS.
 
 Camera geometry was a major experimental variable. During development, the camera was accidentally bumped and then repositioned by eye. Even when the scene looked similar to a person, the mapping between image pixels and robot coordinates changed. Earlier and later demonstrations were therefore not perfectly comparable, and the shift likely contributed to a right-side grasp bias.
 
@@ -49,7 +49,7 @@ The qualified task was:
 
 Training expanded to 25 cube-location markers across the reachable workspace, followed by demonstrations emphasizing gaps, right-side positions, and varied orientations.
 
-A low 3D-printed boundary and removable ramp were designed as a concept for hands-off position and yaw randomization. The recovered history confirms the design and planned use, but does not confirm that the ramp was used for the final 30 trials. It is therefore documented as an evaluation concept, not as completed final-test hardware.
+A low 3D-printed boundary and removable ramp were designed as a concept for hands-off position and yaw randomization.
 
 ## Operational precautions
 
