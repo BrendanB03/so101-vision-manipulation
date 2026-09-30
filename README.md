@@ -45,7 +45,7 @@ The main challenge was not achieving one successful pick; it was obtaining relia
 | Expanded-position qualification | 24/25 (96.0%) | Four added top/bottom gap positions succeeded; the lone failure struck the top of the cube. |
 | Final randomized acceptance test | 29/30 (96.7%) | The policy generalized across randomized intermediate positions and orientations on first attempts. |
 
-Approximately 450 teleoperated demonstrations were collected and curated across the project. This is a cumulative project figure, not the size of one training dataset. The final recorded ACT training run used a rebuilt 300-episode dataset containing 97,030 frames and trained to 100,000 steps.
+The final training dataset contained **450 demonstrations**: 25 positions × 6 orientations × 3 repetitions. It combined 378 clean demonstrations with 72 recordings at four missing positions. Earlier experiments used separate datasets, including a 300-episode V7 run; its frame count and configuration describe that earlier experiment.
 
 ## Dataset development
 
@@ -55,20 +55,16 @@ Several episode counts appear in the project history—80, 100, 125, 175, 240, a
 
 ## ACT training
 
-The final recorded training configuration used:
+The reported final training setup used:
 
+- The 450-episode clean position-and-orientation dataset
+- An ACT policy trained from scratch
 - 100,000 training steps
 - Batch size 8
-- ResNet-18 vision backbone
-- 100-step action chunks
-- 512-dimensional transformer model
-- 3,200-dimensional feed-forward layer
-- 8 attention heads
-- Variational encoder enabled
-- Learning rate of `1e-5`
-- Approximately 51.6 million trainable parameters
+- 1× NVIDIA L40S
+- Image transforms disabled
 
-The run was resumed from the 70,000-step checkpoint and completed at 100,000 steps. Full recovered configuration details and provenance are documented in [Policy Training](docs/policy-training.md).
+The complete final architecture configuration and exact deployed checkpoint have not been retained in this repository. A detailed August 16 V7 training log records a separate 300-episode experiment that resumed from a 70,000-step checkpoint. See [Policy Training](docs/policy-training.md) for the final setup, earlier V7 configuration, and available provenance.
 
 ## Final evaluation
 
@@ -91,7 +87,7 @@ The complete trial-by-trial record is available in [Final Test Results](results/
 - **Position bias:** Early policies performed well near familiar locations but degraded elsewhere. Demonstrations were redistributed across the workspace.
 - **Orientation bias:** Cube yaw was underrepresented. Orientation-focused demonstrations and intermediate angles were added.
 - **Right-side grasp bias:** The camera was accidentally bumped and repositioned by eye, changing camera-to-workspace geometry. This reduced comparability with earlier data and likely contributed to a directional bias.
-- **Dataset integrity:** A merged dataset referenced a missing episode metadata parquet file. The final training dataset was rebuilt and validated before use.
+- **Dataset integrity:** An earlier merged dataset referenced a missing episode metadata parquet file. The affected dataset was rebuilt from intact sources and validated before training.
 - **Evaluation discipline:** The final test used first attempts only and no retries, preventing successful reruns from inflating the result.
 
 ## Repository guide
