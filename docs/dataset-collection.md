@@ -6,7 +6,7 @@ Leader-follower teleoperation was used to record the complete behavior:
 
 > Pick up the red cube and place it in the blue bin.
 
-Each useful episode needed a visible cube and bin, a clean approach, a stable grasp, successful transport, and release into the bin. Failed or interrupted demonstrations were not useful simply because they existed; curation quality directly affected policy behavior.
+Each useful episode needed a visible cube and bin, a clean approach, a stable grasp, successful transport, and release into the bin. Failed or interrupted demonstrations were deleted; curation quality directly affected policy behavior.
 
 ## Collection strategy
 
@@ -19,29 +19,30 @@ The dataset evolved in response to evaluation failures:
 5. **Orientation-focused demonstrations** expanded cube yaw coverage.
 6. **Merged and rebuilt datasets** consolidated compatible episodes for later ACT training.
 
-Approximately 450 teleoperated demonstrations were collected and curated across the project. This cumulative total includes successive data-collection stages; it must not be confused with the episode count used by one training run.
+Approximately 750 teleoperated demonstrations were collected and curated across the project. Not all episodes were included in the dataset used to train the final policy.
 
-## Reconciled dataset history
+## Dataset History
 
-| Stage | Episode count | What is verified |
+| Stage | Episode count | Description |
 | --- | ---: | --- |
-| Early version 2 | 80 | Project history explicitly reported 80 episodes. Exact repository ID was not recovered. |
-| Early version 3 | 100 | Project history explicitly reported 100 episodes. Exact repository ID was not recovered. |
-| Original accumulated dataset | 125 | Referenced as the starting point for a position-expansion stage; exact repository ID was not recovered. |
-| Position-expanded stage | 175 | Referenced as the position-generalization model dataset; exact repository ID was not recovered. |
-| Merged version 6 | 240 | Private archival ID: `TripleB3/red-cube-v6-combined_20260815`. |
-| Rebuilt version 7 | 300 | Private archival ID: `TripleB3/red-cube-v7-rebuilt_20260816`; the recorded training log reported 97,030 frames. |
-| Cumulative project collection | approximately 450 | Total demonstrations gathered/curated over the project, not a single dataset snapshot. |
+| Stage | Episode count | Description |
+| --- | ---: | --- |
+| Initial recording test | 5 | Basic red-cube-to-blue-bin demonstrations to verify teleoperation, camera recording, and dataset creation. |
+| Fixed-position baseline | 25 | All demonstrations used the same cube position and orientation, teaching a consistent pickup, transport, and placement sequence. |
+| V2 position variation | 80 | Varied cube positions while keeping orientation constant. Testing exposed weak performance on the right side of the workspace. |
+| V3 position correction | 100 | Added position coverage, particularly around the weak right side and nearby intermediate positions. |
+| V5 position merge | 180 | Combined V2 and V3. Position performance improved, but right-biased grasps remained. |
+| V6 orientation recordings | 60 | Introduced cube orientation variation to expand beyond the earlier position-focused demonstrations. |
+| V6 combined dataset | 240 | Combined V2’s 80, V3’s 100, and 60 orientation demonstrations. |
+| V7 corrective recordings | 60 | Targeted orientation-dependent failures and off-center grasps, emphasizing difficult angles and right-side workspace regions. |
+| V7 rebuilt dataset | 300 | Combined the 240-episode base with the 60 V7 corrective demonstrations. |
+| V8 corrective recordings | 60 | Targeted persistent rightward grasp bias through centered-grasp demonstrations across positions and orientations. |
+| V9 combined dataset | 360 | Combined the five original source datasets. |
+| Clean orientation rebuild | 63 per angle; 378 combined | Fresh recordings covering 21 positions, six orientations, and three repetitions per combination. Excluded the old dataset series. |
+| Missing-position recordings | 72 | Added four missing positions at all six orientations, with three repetitions each. |
+| Final training dataset | **450** | Combined 378 clean demonstrations with 72 additional recordings: **25 positions × 6 orientations × 3 repetitions**. Used for the final reported **29/30 successful randomized trials**. |
 
 These counts are version snapshots and are not additive.
-
-## Merge integrity issue
-
-A merge involving the private archival dataset `TripleB3/red-cube-v5-merged_20260811` failed because a referenced episode metadata file, `meta/episodes/chunk-000/file-001.parquet`, could not be found.
-
-The repository's privacy setting was not established as the cause. The issue was treated as a dataset-integrity or repository-content problem. A later rebuilt dataset was used instead of presenting the incomplete version as valid.
-
-The beginning of the version 6 merge command was preserved, but the full list of input repository IDs was truncated in the available history. Because an executable command cannot be verified, it is not reconstructed here.
 
 ## Compatibility checks before a merge
 
@@ -63,7 +64,5 @@ More demonstrations did not automatically produce better generalization. Distrib
 - Position coverage alone did not solve orientation failures.
 - Targeted examples based on observed failures were more useful than undirected repetition.
 
-## Data privacy
 
-The Hugging Face datasets remain private. This repository records private archival identifiers for provenance but does not treat them as public reproduction links. No dataset files, parquet data, camera frames, or authenticated download URLs are committed here.
 
