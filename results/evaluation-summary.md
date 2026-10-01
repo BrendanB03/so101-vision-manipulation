@@ -48,7 +48,7 @@ The development tests show why fixed-position repeatability, position generaliza
 
 The clean rebuild emphasized balanced position-and-orientation coverage and consistent centered grasps. Its qualification results, followed by the final randomized test, support improved behavior within the tested red-cube-to-blue-bin tabletop setup.
 
-These evaluations used different starting conditions, datasets, and sample sizes. Their percentages describe separate development milestones rather than a directly comparable or steadily increasing performance curve. The earlier approximately 55% diagnostic and final 96.7% acceptance result should retain their respective test conditions and denominators.
+These evaluations used different starting conditions, datasets, and sample sizes. Their percentages describe separate development milestones rather than a directly comparable or steadily increasing performance curve. 
 
 Several successful final trials still recorded left- or right-biased grasps, and trial 30 recorded contact with the cube's top. The success rate measures completion of the full task; it does not establish perfectly centered grasps or contact-free motion.
 
@@ -58,6 +58,6 @@ The final 30-trial result supports generalization across the tested positions an
 
 The complete final acceptance-test data is available in [final-test-results.csv](final-test-results.csv). The CSV preserves all 30 original randomized-position descriptions, angles, overall success values, and notes. It supports the 29 successes, one failure at trial 15, and tested angle range of 4–86 degrees.
 
-Earlier development results are summarized from the project records. Their complete trial tables and exact checkpoint identities are not all retained in this repository. The final CSV contains only the final acceptance test; earlier qualifications are separate test sets.
+Earlier development results are summarized from the project records. Their complete trial tables and exact checkpoint identities are not contained in this repository. The final CSV contains only the final acceptance test; earlier qualifications are separate test sets.
 
-The original final test table did not separately score grasp success and bin-placement success, so separate rates for those stages are not inferred.
+
