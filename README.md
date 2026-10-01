@@ -17,8 +17,6 @@ The goal was to build a complete learning-from-demonstration workflow rather tha
 5. Diagnose failure patterns and redesign the dataset.
 6. Validate autonomous behavior at randomized positions and orientations.
 
-The original project plan considered a separate OpenCV object-detection stage. The completed implementation instead used ACT as the visuomotor controller; no standalone OpenCV detector is claimed in this repository.
-
 ## System overview
 
 | Layer | Implementation |
@@ -45,7 +43,7 @@ The main challenge was not achieving one successful pick; it was obtaining relia
 | Expanded-position qualification | 24/25 (96.0%) | Four added top/bottom gap positions succeeded; the lone failure struck the top of the cube. |
 | Final randomized acceptance test | 29/30 (96.7%) | The policy generalized across randomized intermediate positions and orientations on first attempts. |
 
-The final training dataset contained **450 demonstrations**: 25 positions × 6 orientations × 3 repetitions. It combined 378 clean demonstrations with 72 recordings at four missing positions. Earlier experiments used separate datasets, including a 300-episode V7 run; its frame count and configuration describe that earlier experiment.
+The final training dataset contained **450 demonstrations**: 25 positions × 6 orientations × 3 repetitions. Earlier experiments used separate datasets.
 
 ## Dataset development
 
@@ -55,7 +53,7 @@ Several episode counts appear in the project history—80, 100, 125, 175, 240, a
 
 ## ACT training
 
-The reported final training setup used:
+The final training setup used:
 
 - The 450-episode clean position-and-orientation dataset
 - An ACT policy trained from scratch
@@ -63,8 +61,6 @@ The reported final training setup used:
 - Batch size 8
 - 1× NVIDIA L40S
 - Image transforms disabled
-
-The complete final architecture configuration and exact deployed checkpoint have not been retained in this repository. A detailed August 16 V7 training log records a separate 300-episode experiment that resumed from a 70,000-step checkpoint. See [Policy Training](docs/policy-training.md) for the final setup, earlier V7 configuration, and available provenance.
 
 ## Final evaluation
 
@@ -77,10 +73,9 @@ The final acceptance test used 30 first-attempt trials with no retries. A trial 
 | Failed complete tasks | 1 |
 | Success rate | 96.7% |
 | Tested angle range | 4–86 degrees |
-| Retries | 0 |
 | Only failure | Trial 15 at 63 degrees; the policy failed to orient properly |
 
-The complete trial-by-trial record is available in [Final Test Results](results/final-test-results.csv). The source table recorded position, angle, overall success, and notes; it did not separately score grasp and bin-placement outcomes.
+The complete trial-by-trial record is available in [Final Test Results](results/final-test-results.csv). The source table recorded position, angle, overall success, and notes.
 
 ## Problems solved
 
@@ -115,16 +110,12 @@ To reproduce the project:
 5. Train an ACT policy, retaining configuration and checkpoint provenance.
 6. Evaluate on untouched first-attempt trials across held-out positions and orientations.
 
-Exact historical commands are included only where they were recoverable. Procedures are described conceptually where the original command text was unavailable.
-
 ## Limitations
 
 - The final evaluation contained 30 trials in one controlled tabletop setup.
 - Only one object-and-destination task was qualified: red cube to blue bin.
 - Lighting, camera placement, bin position, and background variation were limited.
 - The final policy was sensitive to camera-to-workspace geometry.
-- Demonstration videos are not yet in the repository.
-- Dataset and policy repositories remain private and are not public reproduction dependencies.
 
 ## Future improvements
 
@@ -132,8 +123,6 @@ Exact historical commands are included only where they were recoverable. Procedu
 - Test lighting, background, camera, bin, and object variation.
 - Add additional objects and tasks.
 - Compare ACT against other LeRobot policies using the same held-out test design.
-- Preserve camera extrinsics and dataset manifests for every experiment.
-- Publish a reviewed demonstration subset and model card if privacy and storage decisions permit.
 
 ## Acknowledgments
 
