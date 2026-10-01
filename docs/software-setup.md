@@ -1,71 +1,102 @@
 # Software Setup
 
-## Recorded stack
+The project used LeRobot and LeLab to take an SO-101 leader/follower system from calibration and teleoperation through demonstration recording, ACT training, and autonomous red-cube-to-blue-bin evaluation. The final model used **450 demonstrations** and achieved **29/30 complete first-attempt tasks (96.7%)**.
 
-| Software | Project role |
+This document describes the recovered workflow. The exact final environment export and launch commands were not retained, so the historical configuration examples below should be checked against the installed software and deployed policy before reuse.
+
+## Recorded software stack
+
+| Software | Role in the project |
 | --- | --- |
-| Ubuntu 24.04 LTS | Robot workstation operating system |
-| Conda environment `lerobot` | Isolated project environment |
-| Hugging Face LeRobot | Robot configuration, teleoperation, recording, dataset tooling, training, and rollout |
-| PyTorch | ACT policy training and inference backend |
-| CUDA | NVIDIA GPU acceleration |
-| Hugging Face Hub | Private dataset and policy versioning |
-| Git and GitHub | Portfolio documentation and change review |
+| Ubuntu 24.04 LTS | Operating system on the robot workstation |
+| Conda environment `lerobot` | Isolated Python environment for the robot workflow |
+| Hugging Face LeRobot | Motor setup, calibration, device discovery, teleoperation, recording, dataset editing, ACT training, and rollout |
+| LeLab | Interface used during development for the LeRobot recording, training, and rollout workflow |
+| Intel RealSense tools and dependencies | D455 discovery and RGB camera integration |
+| PyTorch and CUDA | Policy training and GPU inference |
+| Hugging Face Hub | Private demonstration datasets and policy artifacts |
+| Git and GitHub | Documentation, version history, and review |
 
-No custom application source code was preserved for this project. The work was performed mainly through LeRobot command-line workflows and configuration flags.
+ROS 2 was installed or explored during the wider project, but its use in the final ACT control path is not established by the retained record. Explicit object detection, camera-to-robot coordinate conversion, and depth-based 3D localization were discussed as later work.
 
-## Reproducibility status
+The demonstrated ACT workflow used camera observations and robot state to predict action chunks. The D455's depth capability does not establish that depth was an input to the final policy. No separate custom application source tree was preserved; the recovered implementation work primarily used existing tools and configuration flags.
 
-The original project history does not contain a complete environment export or a single verified installation command sequence. This repository therefore does not present a guessed package lockfile or fabricated setup commands.
+## Environment and account checks
 
-Before reproducing the work, capture the following for the current LeRobot version:
+The working environment was named `lerobot`. Environment activation is:
 
-- Python version
-- LeRobot commit or release
-- PyTorch and CUDA versions
-- RealSense dependencies
-- SO-101 robot configuration names
-- Dataset feature schema
-- Camera key, resolution, and FPS
-- Policy configuration
+```bash
+conda activate lerobot
+```
 
-## Activation and identity checks
-
-The project used a Conda environment named `lerobot`. Hugging Face authentication was checked during dataset troubleshooting with:
+Hugging Face identity checks used during troubleshooting were:
 
 ```bash
 hf auth whoami
-```
-
-When the account was not authenticated, the recorded corrective command was:
-
-```bash
 hf auth login
 ```
 
-Credentials and tokens must never be committed to this repository.
+Use `hf auth login` when authentication is needed, and verify the intended account before recording or uploading. Dataset and policy IDs use the `owner/repository` form. An early recording attempt failed because the dataset ID lacked its owner namespace.
 
-## Configuration consistency
+Exact Python, LeRobot, LeLab, PyTorch, CUDA, and RealSense dependency versions were not frozen in the surviving record. This repository does not supply a verified installation recipe or dependency lockfile. Authentication tokens should remain outside version control.
 
-Recording, training, and rollout must agree on:
+## Robot setup and device discovery
 
-- Follower robot type and calibration identity
-- Camera names and observation keys
-- Image dimensions and FPS
-- Joint/action feature schema
-- Dataset task description
-- Policy input and output features
+The leader and follower each required motor configuration, calibration, and motion verification before recording. Historical serial assignments were `/dev/ttyACM0` for the follower and `/dev/ttyACM1` for the leader; these assignments can change after reconnecting devices.
 
-The project showed that a pipeline can execute without being experimentally comparable. A camera pose change or schema mismatch can invalidate assumptions even when individual commands succeed.
+Tools discussed or used during setup included `lerobot-setup-motors`, `lerobot-calibrate`, `lerobot-find-port`, `lerobot-find-cameras`, and `lerobot-teleoperate`. Their flags and configuration names depend on the installed LeRobot version; this list is not a complete command sequence.
 
-## Recommended environment capture
+Before a session, identify both arms, load their corresponding calibration identities, confirm leader-to-follower motion, and verify the camera view. Preserve the robot type, joint/action features, and calibration identities with the experiment configuration. See [Hardware Setup](hardware-setup.md).
 
-For a future rerun, save a reviewed environment record after the system works:
+## Camera configuration history
 
-1. Export the Conda environment.
-2. Record the LeRobot Git commit.
-3. Record GPU and CUDA information.
-4. Save non-secret robot and camera configuration.
-5. Add a dataset card and model card.
-6. Tag the Git commit used for each experiment.
+The recovered camera settings came from different stages of development:
 
+| Historical context | Camera identity or observation key | RGB stream |
+| --- | --- | --- |
+| Early camera tests | Device index 4 | 640 × 480 at 30 FPS |
+| Native RealSense teleoperation example | D455 serial `039222250348`; key `front` | 1280 × 720 at 30 FPS |
+| Recovered deployed checkpoint configuration | Key `workspace_cam` | 640 × 480; complete stream settings were not recovered |
+
+These entries are historical examples, not interchangeable final settings. Device indices are temporary discovery results. The complete camera configuration used for the final 450-episode model was not retained.
+
+Recording and rollout must match the policy's camera observation key and expected image dimensions. Preserve stream timing and the physical camera pose as well: the policy sees different pixels if the camera moves, even when the software configuration is unchanged.
+
+## Recording, curation, and merging
+
+The workflow progressed through:
+
+1. Calibrate the arms and verify teleoperation with the camera.
+2. Record synchronized images, robot state, and actions while the leader demonstrates the complete task.
+3. Inspect recordings and curate the source datasets.
+4. Validate and merge compatible sources.
+5. Train ACT, deploy a selected checkpoint, and record physical evaluation results.
+6. Use observed misses to choose the next recording conditions.
+
+`lerobot-edit-dataset` was used for dataset operations. A merge attempt exposed a distinction between an input repository selector and the new output repository argument: the recovered correction used `--new_repo_id` for the destination. Check the installed tool's help rather than copying flags across versions.
+
+Another merge failed because referenced episode metadata was missing. A valid merge requires intact source files, compatible robot/action features, camera keys and image shapes, and compatible timing. Check the resulting episode count and inspect playback before training.
+
+The final collection was a clean rebuild: **378 episodes = 21 positions × 6 orientations × 3 repetitions**, followed by **72 episodes = 4 additional positions × 6 orientations × 3 repetitions**. The final **450 episodes** excluded the earlier accumulated series. See [Dataset Collection](dataset-collection.md).
+
+## Training and checkpoint context
+
+The local workstation included an RTX 2080 Super and 16 GB RAM. The reported final ACT training used one NVIDIA L40S, 100,000 steps, batch size 8, image transforms disabled, training from scratch, and checkpoints every 10,000 steps.
+
+The earlier V7 run used a 300-episode dataset and was interrupted around 73,000 steps. A resume was configured from the 70,000-step checkpoint. That recovery belongs to the earlier run; it does not describe the final 450-episode training.
+
+The final learning rate, seed, complete architecture configuration, frame count, policy repository, and exact deployed checkpoint were not independently recovered. The detailed V7 log must not be substituted for the final configuration. See [Policy Training](policy-training.md).
+
+## Rollout consistency and future reproduction
+
+Before autonomous evaluation, confirm that the dataset, policy, and live robot agree on calibration identity, joint/action schema, observation keys, image dimensions, and task conditions. A command completing successfully does not establish compatibility or comparable camera geometry.
+
+For a future rerun, retain:
+
+- A working environment export and exact software revisions.
+- Non-secret motor, calibration, camera, recording, training, and rollout configurations.
+- Dataset revisions, source lineage, episode/frame counts, and merge validation.
+- The full training log, selected checkpoint, and exported policy configuration.
+- Evaluation conditions and row-level outcomes linked to that checkpoint.
+
+The repository now preserves the [final 30-trial results](../results/final-test-results.csv), but it does not contain a complete reproducible runtime bundle. See [Inference and Evaluation](inference-and-evaluation.md) and the [Project Timeline](project-timeline.md) for the deployment context.
