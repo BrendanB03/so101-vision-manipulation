@@ -40,8 +40,6 @@ Approximately 750 teleoperated demonstrations were reported as collected and cur
 | Missing-position recordings | 72 | Added four gaps: top-left/top, top/top-right, bottom-left/bottom, and bottom/bottom-right. Covered all six orientations with three repetitions each. |
 | Final training dataset | **450** | `TripleB3/rc-2-final-450_20260823`: 378 clean demonstrations + 72 additional recordings = **25 positions × 6 orientations × 3 repetitions**. Used for the final reported **29/30 successful first-attempt complete tasks**, with no retries. |
 
-The 360-episode merge follows the V8 label in the updated [Project Timeline](project-timeline.md); earlier V9 names are retained above as provenance. Merged snapshots reuse source episodes, so the table cannot be summed to calculate a unique demonstration total.
-
 ## Compatibility checks before a merge
 
 - Robot and action feature schemas match.
