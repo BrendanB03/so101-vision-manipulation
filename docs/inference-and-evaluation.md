@@ -68,4 +68,4 @@ The complete source table was preserved as [Final Test Results](../results/final
 - Successful trials included off-center grasps and a top contact; complete-task success does not imply centered grasps or contact-free motion.
 - Lighting and background robustness were not systematically qualified.
 - Camera pose changes affected comparability during development; their contribution to grasp bias was not isolated in a controlled experiment.
-- The exact final deployed checkpoint and complete runtime configuration were not retained, limiting exact reproduction.
+
