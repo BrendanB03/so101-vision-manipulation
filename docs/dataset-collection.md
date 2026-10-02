@@ -14,12 +14,12 @@ The dataset evolved in response to evaluation failures:
 
 1. **Controlled demonstrations** established the end-to-end pipeline.
 2. **Varied-position demonstrations** expanded the reachable pickup region.
-3. **Twenty-five training locations** imposed deliberate spatial coverage.
-4. **Gap and right-side demonstrations** addressed sparse areas and directional bias.
-5. **Orientation-focused demonstrations** expanded cube yaw coverage.
-6. **Merged and rebuilt datasets** consolidated compatible episodes for later ACT training.
+3. **Targeted right-side and intermediate-position demonstrations** addressed weak regions and directional grasp bias.
+4. **Orientation-focused and corrective demonstrations** addressed angle-dependent misses and off-center grasps.
+5. **A clean balanced rebuild** replaced the accumulated series with 21 positions × 6 orientations × 3 repetitions.
+6. **Four missing-position recordings** expanded the clean dataset to 25 positions; compatible sources were merged into the final 450 episodes.
 
-Approximately 750 teleoperated demonstrations were collected and curated across the project. Not all episodes were included in the dataset used to train the final policy.
+Approximately 750 teleoperated demonstrations were reported as collected and curated across the project. This cumulative estimate is distinct from the 450 episodes used to train the final policy.
 
 ## Dataset History
 
@@ -34,13 +34,13 @@ Approximately 750 teleoperated demonstrations were collected and curated across 
 | V6 combined dataset | 240 | Combined V2’s 80, V3’s 100, and 60 orientation demonstrations. |
 | V7 corrective recordings | 60 | Targeted orientation-dependent failures and off-center grasps, emphasizing difficult angles and right-side workspace regions. |
 | V7 rebuilt dataset | 300 | Combined the 240-episode base with the 60 V7 corrective demonstrations. |
-| V8 corrective recordings | 60 | Targeted persistent rightward grasp bias through centered-grasp demonstrations across positions and orientations. |
-| V9 combined dataset | 360 | Combined the five original source datasets. |
-| Clean orientation rebuild | 63 per angle; 378 combined | Fresh recordings covering 21 positions, six orientations, and three repetitions per combination. Excluded the old dataset series. |
-| Missing-position recordings | 72 | Added four missing positions at all six orientations, with three repetitions each. |
-| Final training dataset | **450** | Combined 378 clean demonstrations with 72 additional recordings: **25 positions × 6 orientations × 3 repetitions**. Used for the final reported **29/30 successful randomized trials**. |
+| Post-V7 corrective recordings | 60 | Targeted persistent rightward grasp bias through centered-grasp demonstrations across positions and orientations. The source was archived as `TripleB3/red-cube-v9_20260816_151902`. |
+| V8 combined dataset | 360 | Combined the five original source datasets: 80 + 100 + 60 + 60 + 60. Earlier records also called this merge V9. |
+| Clean orientation rebuild | 63 per angle; 378 combined | Fresh recordings covering 21 positions at 0°, 15°, 30°, 45°, 60°, and 75°, with three repetitions per combination. Excluded the old dataset series. |
+| Missing-position recordings | 72 | Added four gaps: top-left/top, top/top-right, bottom-left/bottom, and bottom/bottom-right. Covered all six orientations with three repetitions each. |
+| Final training dataset | **450** | `TripleB3/rc-2-final-450_20260823`: 378 clean demonstrations + 72 additional recordings = **25 positions × 6 orientations × 3 repetitions**. Used for the final reported **29/30 successful first-attempt complete tasks**, with no retries. |
 
-These counts are version snapshots and are not additive.
+The 360-episode merge follows the V8 label in the updated [Project Timeline](project-timeline.md); earlier V9 names are retained above as provenance. Merged snapshots reuse source episodes, so the table cannot be summed to calculate a unique demonstration total.
 
 ## Compatibility checks before a merge
 
@@ -58,9 +58,6 @@ More demonstrations did not automatically produce better generalization. Distrib
 
 - Dense center coverage did not guarantee success at workspace edges.
 - A camera pose shift made old and new image distributions less comparable.
-- Sparse right-side examples contributed to directional grasp behavior.
+- Targeted right-side examples improved regional performance, but off-center grasps remained; coverage and camera geometry were both relevant.
 - Position coverage alone did not solve orientation failures.
 - Targeted examples based on observed failures were more useful than undirected repetition.
-
-
-
